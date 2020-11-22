@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>home-page</title>
+    </head>
+    <body>
+        <a th:href="@{/home/reg}">Registration</a>
+
+        <a th:href="@{/worker/get-all-orders}">(Worker-page) get orders</a>
+        <a th:href="@{/customer/create-order}">(Customer-page) create order</a>
+        <a th:href="@{/customer/show-my-orders}">(Customer-page) show my orders</a>
+        <a th:href="@{/customer/close-order}">(Customer-page) delete order</a>
+        <a th:href="@{/reputation/set-comment}">(Test) set comment</a>
+        <br>
+        <br>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Sign Out</button>
+        </form>
+    </body>
+</html>

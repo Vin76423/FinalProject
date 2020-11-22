@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>registration-page</title>
+    </head>
+    <body>
+        <form th:action="@{/home/reg}" method="post" th:object="${user}">
+            <label th:for="${#ids.next('userName')}">Login: </label>
+            <input type="text" th:field="*{userName}">
+
+            <label th:for="${#ids.next('password')}">Login: </label>
+            <input type="password" th:field="*{password}">
+
+            <label th:for="${#ids.next('role')}">Role: </label>
+            <select typeof="text" th:field="*{role}">
+                <option value="WORKER">Worker</option>
+                <option value="CUSTOMER">Customer</option>
+            </select>
+
+            <br>
+            <br>
+            <button>Create Account</button>
+        </form>
+
+        <br>
+        <br>
+        <a th:href="@{/home}">Home</a>
+    </body>
+</html>
