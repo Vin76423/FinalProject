@@ -20,7 +20,7 @@ public class Comment {
     @JoinColumn(name = "owner_id")
     @ToString.Exclude
     private User owner;
-    private String rating;
+    private double rating;
     private String title;
     private String description;
     private String authorUserName;

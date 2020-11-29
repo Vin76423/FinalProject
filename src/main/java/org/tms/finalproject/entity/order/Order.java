@@ -4,6 +4,7 @@ import lombok.*;
 import org.tms.finalproject.entity.Location;
 import org.tms.finalproject.entity.User;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -21,12 +22,28 @@ public abstract class Order {
     private String title;
     private String description;
 
-    @OneToOne
+    @ManyToOne
     private User author;
+
+    @ManyToOne
+    private User executor;
+
+    @ManyToMany(fetch = FetchType.EAGER/*, mappedBy = "supposedOrders"*/)
+    @JoinTable(
+            name = "applicants_orders",
+            joinColumns = {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private List<User> applicantsToOrder;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Location location;
 
-    private boolean isActive = true;
+    private String status = "ACTIVE_STATUS";
+//    ACTIVE_STATUS
+//    AWAITING_APPROVAL_STATUS
+//    IN_WORK_STATUS
+//    CLOSED_STATUS
+
 //    private LocalDateTime orderCreatedDateTime = LocalDateTime.now();
 }

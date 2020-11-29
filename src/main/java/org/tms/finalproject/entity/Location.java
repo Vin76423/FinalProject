@@ -19,4 +19,9 @@ public class Location {
     private String street;
     private int home;
     private int flat;
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s st., %d", city, street, home);
+    }
 }

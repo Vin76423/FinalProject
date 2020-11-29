@@ -8,10 +8,10 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 public class CommentDto {
-    private long orderOwnerId; // hiden field in form
-    private String rating; // select field in form, have a defult value
-    @NotEmpty(message = "It's required field!")
-    @NotBlank(message = "It's required field!")
+    private long commentOwnerId; // hidden field in form
+    private String pagLink; // hidden field in form
+
     private String title;
     private String description;
+    private double rating;
 }

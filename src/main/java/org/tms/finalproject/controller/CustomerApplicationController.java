@@ -6,12 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.tms.finalproject.dto.CommentDto;
 import org.tms.finalproject.dto.order.OrderDto;
+import org.tms.finalproject.dto.order.PaidOrderDto;
+import org.tms.finalproject.dto.order.UnpaidOrderDto;
 import org.tms.finalproject.entity.order.Order;
 import org.tms.finalproject.service.database.OrderService;
 import org.tms.finalproject.service.mapper.OrderDtoDoMapperService;
 import java.util.List;
-import java.util.Map;
 
 
 @Controller
@@ -20,54 +22,96 @@ public class CustomerApplicationController {
 
     private OrderService orderService;
     private OrderDtoDoMapperService orderDtoDoMapperService;
-    private Map<String, OrderDto> orderDtoManager;
 
     public CustomerApplicationController(OrderService orderService,
-                                         OrderDtoDoMapperService orderDtoDoMapperService,
-                                         Map<String, OrderDto> orderDtoManager) {
+                                         OrderDtoDoMapperService orderDtoDoMapperService) {
         this.orderService = orderService;
         this.orderDtoDoMapperService = orderDtoDoMapperService;
-        this.orderDtoManager = orderDtoManager;
+    }
+
+    @GetMapping(path = "/get-order-introduction")
+    protected ModelAndView getOrderIntroduction(ModelAndView modelAndView) {
+        modelAndView.setViewName("customer/order-introduction");
+        return modelAndView;
     }
 
     @GetMapping(path = "/create-order")
     public ModelAndView getOrderForm(@RequestParam("order-type") String orderType,
                                      ModelAndView modelAndView) {
-        OrderDto orderDto = orderDtoManager.get(orderType);
-        modelAndView.addObject("dto", orderDto);
-        modelAndView.setViewName("customer/order-form");
-        return modelAndView;
-    }
-
-    @PostMapping(path = "/create-order")
-    public ModelAndView createOrder(@ModelAttribute("dto") OrderDto orderDto,
-                                    BindingResult bindingResult,
-                                    ModelAndView modelAndView) {
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("customer/order-form");
+        if (orderType.equals("PAID_ORDER")) {
+            modelAndView.addObject("orderDto", new PaidOrderDto());
+            modelAndView.setViewName("customer/paid-order-form");
+        } else if (orderType.equals("UNPAID_ORDER")) {
+            modelAndView.addObject("orderDto", new UnpaidOrderDto());
+            modelAndView.setViewName("customer/unpaid-order-form");
         } else {
-            Order order = orderDtoDoMapperService.buildDo(orderDto);
-            orderService.createOrder(order);
-            modelAndView.setViewName("redirect:/home");
+            throw new IllegalArgumentException("Order type isn't correct!");
         }
         return modelAndView;
     }
 
-    @GetMapping(path = "/close-order")
-    public ModelAndView closeOrder(ModelAndView modelAndView,
-                                   @RequestParam("order-id") long orderId) {
-        orderService.deleteOrderById(orderId);
-        modelAndView.setViewName("redirect:/home");
+    @PostMapping(path = "/create-paid-order")
+    public ModelAndView createPaidOrder(@ModelAttribute("orderDto") PaidOrderDto orderDto,
+                                    BindingResult bindingResult,
+                                    ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("customer/paid-order-form");
+        } else {
+            Order order = orderDtoDoMapperService.buildDo(orderDto);
+            orderService.createOrder(order);
+            modelAndView.setViewName("redirect:/customer/get-all-created-orders");
+        }
         return modelAndView;
     }
 
-    @GetMapping(path = "/show-my-orders")
+    @PostMapping(path = "/create-unpaid-order")
+    public ModelAndView createUnpaidOrder(@ModelAttribute("orderDto") UnpaidOrderDto orderDto,
+                                    BindingResult bindingResult,
+                                    ModelAndView modelAndView) {
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("customer/unpaid-order-form");
+        } else {
+            Order order = orderDtoDoMapperService.buildDo(orderDto);
+            orderService.createOrder(order);
+            modelAndView.setViewName("redirect:/customer/get-all-created-orders");
+        }
+        return modelAndView;
+    }
+
+    @GetMapping(path = "/get-all-created-orders")
     public ModelAndView showCustomerOrders(ModelAndView modelAndView,
                                            Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
         List<Order> orders = orderService.getAllOrdersByAuthorLogin(principal.getUsername());
         modelAndView.addObject("orders", orders);
-        modelAndView.setViewName("redirect:/home");
+        modelAndView.setViewName("customer/created-orders");
+        return modelAndView;
+    }
+
+    @GetMapping(path = "/get-order-by-id")
+    public ModelAndView getOrderById(@RequestParam("order-id") long orderId,
+                                     ModelAndView modelAndView) {
+        Order order = orderService.getOrderById(orderId);
+        modelAndView.addObject("order", order);
+        modelAndView.addObject("commentDto", new CommentDto());
+        modelAndView.setViewName("customer/order");
+        return modelAndView;
+    }
+
+    @GetMapping(path = "/approve-order")
+    public ModelAndView approveOrder(@RequestParam("order-id") long orderId,
+                                     @RequestParam("worker-id") long workerId,
+                                     ModelAndView modelAndView) {
+        orderService.approveOrder(orderId, workerId);
+        modelAndView.setViewName("redirect:/customer/get-all-created-orders");
+        return modelAndView;
+    }
+
+    @GetMapping(path = "/close-order")
+    public ModelAndView closeOrder(@RequestParam("order-id") long orderId,
+                                   ModelAndView modelAndView) {
+        orderService.closeOrderById(orderId);
+        modelAndView.setViewName("redirect:/customer/get-all-created-orders");
         return modelAndView;
     }
 }
