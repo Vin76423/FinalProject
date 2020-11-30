@@ -21,21 +21,21 @@
                             <img th:src="@{img/help.jpg}" alt="order-type-logo" class="card-img-top">
                             <div class="card-body">
                                 <h4 th:text="${order.title}" class="card-title text-center"></h4>
-                                <div th:if="${order.status.equals('AWAITING_APPROVAL_STATUS')}">
+                                <div th:if="${order.status.equals('AWAITING_APPROVAL_STATUS')}" class="my-sm-4">
                                     <h6 class="card-text">Applicants of order</h6>
-                                    <p th:text="'Quantity: ' + ${order.applicantsToOrder.size()}" class="card-text"></p>
+                                    <div th:text="'Quantity: ' + ${order.applicantsToOrder.size()}" class="card-text"></div>
                                 </div>
-                                <div th:if="${order.status.equals('IN_WORK_STATUS')}">
+                                <div th:if="${order.status.equals('IN_WORK_STATUS')}" class="my-sm-4">
                                     <h6 class="card-text">Executor of order</h6>
-                                    <p th:text="'Login: ' + ${order.executor.userName}" class="card-text"></p>
-                                    <p th:text="'Rating: ' + ${order.executor.rating}" class="card-text"></p>
+                                    <div th:text="'Login: ' + ${order.executor.userName}" class="card-text"></div>
+                                    <div th:text="'Rating: ' + ${order.executor.rating}" class="card-text"></div>
                                 </div>
-                                <div>
+                                <div class="my-sm-4">
                                     <h6 class="card-text">Details</h6>
-                                    <p th:text="'Location of order: ' + ${order.location.toString()}" class="card-text"></p>
-                                    <p th:text="'Status: ' + ${order.status}" class="card-text"></p>
+                                    <div th:text="'Location of order: ' + ${order.location.toString()}" class="card-text"></div>
+                                    <div th:text="'Status: ' + ${order.status}" class="card-text"></div>
                                 </div>
-                                <a th:href="@{/customer/get-order-by-id(order-id=${order.id})}" class="btn btn-primary">Look</a>
+                                <a th:href="@{/customer/get-order-by-id(order-id=${order.id})}" class="btn btn-primary my-sm-4">Look</a>
                             </div>
                         </div>
                     </div>

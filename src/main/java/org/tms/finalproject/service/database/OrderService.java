@@ -1,13 +1,16 @@
 package org.tms.finalproject.service.database;
 
-import org.tms.finalproject.dto.order.FilterOrderDto;
+import org.tms.finalproject.dto.filter.FilterOrderDto;
+import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
 import java.util.List;
 
 public interface OrderService {
     Order createOrder(Order order);
     Order getOrderById(long id);
-    void approveOrder(long orderId, long workerId);
+
+    void takeOrder(long orderId, User applicant);
+    void approveOrder(long orderId, User executor);
     void closeOrderById(long orderId);
     void deleteOrderById(long orderId);
 

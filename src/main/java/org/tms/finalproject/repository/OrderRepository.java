@@ -23,7 +23,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "from Order o where o.status = 'ACTIVE_STATUS' and o.title like :line")
     List<Order> findAllOrdersByPartOfTitle(String line);
 
-//    List<Order> findAllByStatus(String status);
     List<Order> findAllByAuthor_UserName(String userName);
     List<Order> findAllByExecutor_UserName(String userName);
 

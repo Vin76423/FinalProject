@@ -1,17 +1,14 @@
 package org.tms.finalproject.controller;
 
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.tms.finalproject.dto.CommentDto;
-import org.tms.finalproject.dto.order.FilterOrderDto;
+import org.tms.finalproject.dto.filter.FilterOrderDto;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
 import org.tms.finalproject.service.database.OrderService;
 import org.tms.finalproject.service.database.UserService;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -57,9 +54,7 @@ public class WorkerApplicationController {
 
     @GetMapping(path = "/get-taken-orders")
     public ModelAndView getTakenOrders(ModelAndView modelAndView) {
-        SecurityContext context = SecurityContextHolder.getContext();
-        String userName = ((org.springframework.security.core.userdetails.User) context.getAuthentication().getPrincipal()).getUsername();
-
+        String userName = userService.getActualUserName();
         List<Order> orders = orderService.getAllTakenOrdersByUserName(userName);
         modelAndView.addObject("orders", orders);
         modelAndView.setViewName("worker/progress");
@@ -79,27 +74,8 @@ public class WorkerApplicationController {
     @GetMapping(path = "/take-order")
     public ModelAndView takeOrder(@RequestParam("order-id") long orderId,
                                   ModelAndView modelAndView) {
-        SecurityContext context = SecurityContextHolder.getContext();
-        String userName = ((org.springframework.security.core.userdetails.User) context.getAuthentication().getPrincipal()).getUsername();
-        User newApplicant = userService.getUserByLogin(userName);
-        Order order = orderService.getOrderById(orderId);
-
-        // First Step:
-        if (!order.getStatus().equals("AWAITING_APPROVAL_STATUS")) {
-            order.setStatus("AWAITING_APPROVAL_STATUS");
-        }
-
-        // Second Step:
-        if (order.getApplicantsToOrder() == null) {
-            List<User> applicants = new ArrayList<>();
-            applicants.add(newApplicant);
-            order.setApplicantsToOrder(applicants);
-        } else {
-            order.getApplicantsToOrder().add(newApplicant);
-        }
-        // Evokes within itself orderRepository.save(order), and will overwrite old order:
-        orderService.createOrder(order);
-
+        User actualUser = userService.getActualUser();
+        orderService.takeOrder(orderId, actualUser);
         modelAndView.setViewName("redirect:/worker/get-taken-orders");
         return modelAndView;
     }

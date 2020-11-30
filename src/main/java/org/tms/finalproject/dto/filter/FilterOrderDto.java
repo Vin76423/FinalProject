@@ -1,4 +1,4 @@
-package org.tms.finalproject.dto.order;
+package org.tms.finalproject.dto.filter;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

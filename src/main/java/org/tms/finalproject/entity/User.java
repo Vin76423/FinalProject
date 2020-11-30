@@ -4,7 +4,9 @@ import lombok.*;
 import org.tms.finalproject.entity.order.Order;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -25,14 +27,6 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "executor")
     private List<Order> executeOrders;
 
-//    @ToString.Exclude
-//    @ManyToMany
-//    private List<Order> supposedOrders;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
     private List<Comment> comments;
-
-    public User(long id) {
-        this.id = id;
-    }
 }

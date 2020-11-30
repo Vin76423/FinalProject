@@ -71,16 +71,16 @@
                             <img th:src="@{img/help.jpg}" alt="order-type-logo" class="card-img-top">
                             <div class="card-body">
                                 <h4 th:text="${item.title}" class="card-title text-center"></h4>
-                                <div>
+                                <div class="my-sm-2">
                                     <h6 class="card-text">Author of order</h6>
-                                    <p th:text="'Login: ' + ${item.author.userName}" class="card-text"></p>
-                                    <p th:text="'Rating: ' + ${item.author.rating}" class="card-text"></p>
+                                    <div th:text="'Login: ' + ${item.author.userName}" class="card-text"></div>
+                                    <div th:text="'Rating: ' + ${item.author.rating}" class="card-text"></div>
                                 </div>
-                                <div>
+                                <div class="my-sm-2">
                                     <h6 class="card-text">Details</h6>
-                                    <p th:text="'Location of order: ' + ${item.location.toString()}" class="card-text"></p>
+                                    <div th:text="'Location of order: ' + ${item.location.toString()}" class="card-text"></div>
                                 </div>
-                                <div class="">
+                                <div class="my-sm-2">
                                     <a th:href="@{/worker/get-order-by-id(order-id=${item.id})}" class="btn btn-primary float-sm-left">Look</a>
                                     <a th:href="@{/worker/take-order(order-id=${item.id})}" class="btn btn-primary float-sm-right">Take</a>
                                 </div>

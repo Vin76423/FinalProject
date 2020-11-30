@@ -15,13 +15,17 @@
 
         <div style="background: #70e9ff" class="container-fluid">
             <div class="container bg-light">
-                <div class="row text-center">
+                <div class="row">
+
                     <div class="col-sm-12">
-                        <h4 th:text="${order.title}"></h4>
-                        <p th:text="${order.description}"></p>
-                        <h6 class="text-left">Status of order: </h6>
-                        <div th:text="${order.status}" class="d-inline-block float-right"></div>
+                        <h4 th:text="${order.title}" class="text-center"></h4>
+                        <p th:text="${order.description}" class="mb-sm-4"></p>
+                        <div class="mb-sm-4">
+                            <h6 class="float-left mr-sm-2">Status of order: </h6>
+                            <div th:text="${order.status}" class="d-inline"></div>
+                        </div>
                     </div>
+
                     <div class="col-sm-12 ">
                         <h6>Location: </h6>
                         <ul>
@@ -31,45 +35,52 @@
                             <li th:text="'Flat number - ' + ${order.location.flat}"></li>
                         </ul>
                     </div>
+
                     <div th:if="${order.status.equals('AWAITING_APPROVAL_STATUS')}" class="col-sm-9">
                         <h6>Applicant's List: </h6>
                         <div th:each="applicant : ${order.applicantsToOrder}">
-                            <h6 th:text="${applicant.userName}"></h6>
-                            <div th:text="${applicant.rating}"></div>
-                            <div th:if="${application.comments != null}" class="">
-                                <div th:each="comment : ${applicant.comments}">
-                                    <h6 th:text="${comment.title}"></h6>
-                                    <div th:text="${comment.rating}"></div>
-                                    <p th:text="${comment.description}"></p>
+                            <div class="float-left mr-sm-2">
+                                <div>
+                                    <div th:text="${applicant.userName}" class="float-left mr-sm-2"></div>
+                                    <div th:text="${applicant.rating}" class="float-right mr-sm-2"></div>
+                                </div>
+                                <div th:if="${applicant.comments != null}">
+                                    <div th:each="comment : ${applicant.comments}">
+                                        <h6 th:text="${comment.title}" class="float-left mr-sm-2"></h6>
+                                        <div th:text="${comment.rating}"></div>
+                                        <p th:text="${comment.description}"></p>
+                                    </div>
                                 </div>
                             </div>
                             <a th:href="@{/customer/approve-order(order-id=${order.id},worker-id=${applicant.id})}" class="btn btn-outline-primary">Approve</a>
                         </div>
                     </div>
+
                     <div th:if="${order.status.equals('IN_WORK_STATUS')}" class="col-sm-9">
                         <h6>Worker: </h6>
-                        <div th:text="${order.executor.userName}"></div>
-                        <div th:text="${order.executor.rating}"></div>
-                        <div th:if="${order.executor.comments != null}" class="">
-                            <div th:each="comment : ${order.author.comments}">
-                                <h6 th:text="${comment.title}"></h6>
+                        <div>
+                            <div th:text="${order.executor.userName}" class="float-left mr-sm-2"></div>
+                            <div th:text="${order.executor.rating}"></div>
+                        </div>
+                        <div th:if="${order.executor.comments != null}" class="text-left">
+                            <div th:text="${'Executors comments...'}" class="text-muted mt-sm-2"></div>
+                            <div th:each="comment : ${order.author.comments}" class="my-sm-4">
+                                <h6 th:text="${comment.title}" class="float-left mr-sm-2"></h6>
                                 <div th:text="${comment.rating}"></div>
                                 <p th:text="${comment.description}"></p>
                             </div>
                         </div>
                     </div>
 
-<!--                    <div th:if="${order.status.equals('ACTIVE_STATUS')}">-->
-<!--                        <a th:href="@{/worker/take-order(order-id=${order.id})}" class="btn btn-outline-primary">Tak Order</a>-->
-<!--                    </div>-->
-
-                    <div th:if="${order.status.equals('IN_WORK_STATUS')}">
-                        <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal">Create Comment</a>
+                    <div class="col-sm-12 my-sm-4" th:if="${order.status.equals('IN_WORK_STATUS')}">
+                        <div class="float-left">
+                            <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal">Create Comment</a>
+                        </div>
+                        <div class="text-right">
+                            <a th:href="@{/customer/close-order(order-id=${order.id})}" class="btn btn-outline-primary">Close Order</a>
+                        </div>
                     </div>
 
-                    <div th:if="${order.status.equals('IN_WORK_STATUS')}">
-                        <a th:href="@{/customer/close-order(order-id=${order.id})}" class="btn btn-outline-primary">Close Order</a>
-                    </div>
                 </div>
             </div>
         </div>

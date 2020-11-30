@@ -4,7 +4,9 @@ import lombok.*;
 import org.tms.finalproject.entity.Location;
 import org.tms.finalproject.entity.User;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
@@ -24,17 +26,16 @@ public abstract class Order {
 
     @ManyToOne
     private User author;
-
     @ManyToOne
     private User executor;
 
-    @ManyToMany(fetch = FetchType.EAGER/*, mappedBy = "supposedOrders"*/)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "applicants_orders",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
-    private List<User> applicantsToOrder;
+    private List<User> applicantsToOrder = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     private Location location;
@@ -46,4 +47,5 @@ public abstract class Order {
 //    CLOSED_STATUS
 
 //    private LocalDateTime orderCreatedDateTime = LocalDateTime.now();
+
 }

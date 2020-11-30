@@ -1,7 +1,8 @@
 package org.tms.finalproject.service.database;
 
 import org.springframework.stereotype.Service;
-import org.tms.finalproject.dto.order.FilterOrderDto;
+import org.springframework.transaction.annotation.Transactional;
+import org.tms.finalproject.dto.filter.FilterOrderDto;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
 import org.tms.finalproject.repository.OrderRepository;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class OrderServiceImpl implements OrderService {
     private static final double MAX_VALUE = 1.8 * Math.pow(10, 308); //1.8е+308
     private OrderRepository orderRepository;
@@ -36,15 +38,32 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void approveOrder(long orderId, long workerId) {
+    public void takeOrder(long orderId, User applicant) {
         if (orderId < 1) {
             throw new IllegalArgumentException("OrderId is not correct!");
-        } else if (workerId < 1) {
-            throw new IllegalArgumentException("WorkerId is not correct!");
+        } else if (applicant == null) {
+            throw new IllegalArgumentException("Applicant is null!");
         }
-        Order order = orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
-        order.setExecutor(new User(workerId));
-        order.setApplicantsToOrder(null);
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(RuntimeException::new);
+        order.getApplicantsToOrder().add(applicant);
+        order.setStatus("AWAITING_APPROVAL_STATUS");
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void approveOrder(long orderId, User executor) {
+        if (orderId < 1) {
+            throw new IllegalArgumentException("OrderId is not correct!");
+        } else if (executor == null) {
+            throw new IllegalArgumentException("Executor is null!");
+        }
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(RuntimeException::new);
+        order.setExecutor(executor);
+        order.getApplicantsToOrder().clear();
         order.setStatus("IN_WORK_STATUS");
         orderRepository.save(order);
     }
@@ -54,7 +73,9 @@ public class OrderServiceImpl implements OrderService {
         if (orderId < 1) {
             throw new IllegalArgumentException("OrderId is not correct!");
         }
-        Order order = orderRepository.findById(orderId).orElseThrow(RuntimeException::new);
+        Order order = orderRepository
+                .findById(orderId)
+                .orElseThrow(RuntimeException::new);
         order.setStatus("CLOSED_STATUS");
         orderRepository.save(order);
     }
@@ -129,4 +150,5 @@ public class OrderServiceImpl implements OrderService {
         resultOrders.addAll(orderRepository.findAllByExecutor_UserName(userName));
         return resultOrders;
     }
+
 }

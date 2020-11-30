@@ -1,7 +1,6 @@
 package org.tms.finalproject.controller;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +9,10 @@ import org.tms.finalproject.dto.CommentDto;
 import org.tms.finalproject.dto.order.OrderDto;
 import org.tms.finalproject.dto.order.PaidOrderDto;
 import org.tms.finalproject.dto.order.UnpaidOrderDto;
+import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
 import org.tms.finalproject.service.database.OrderService;
+import org.tms.finalproject.service.database.UserService;
 import org.tms.finalproject.service.mapper.OrderDtoDoMapperService;
 import java.util.List;
 
@@ -21,11 +22,14 @@ import java.util.List;
 public class CustomerApplicationController {
 
     private OrderService orderService;
+    private UserService userService;
     private OrderDtoDoMapperService orderDtoDoMapperService;
 
     public CustomerApplicationController(OrderService orderService,
+                                         UserService userService,
                                          OrderDtoDoMapperService orderDtoDoMapperService) {
         this.orderService = orderService;
+        this.userService = userService;
         this.orderDtoDoMapperService = orderDtoDoMapperService;
     }
 
@@ -81,8 +85,8 @@ public class CustomerApplicationController {
     @GetMapping(path = "/get-all-created-orders")
     public ModelAndView showCustomerOrders(ModelAndView modelAndView,
                                            Authentication authentication) {
-        User principal = (User) authentication.getPrincipal();
-        List<Order> orders = orderService.getAllOrdersByAuthorLogin(principal.getUsername());
+        String userName = userService.getActualUserName();
+        List<Order> orders = orderService.getAllOrdersByAuthorLogin(userName);
         modelAndView.addObject("orders", orders);
         modelAndView.setViewName("customer/created-orders");
         return modelAndView;
@@ -102,7 +106,8 @@ public class CustomerApplicationController {
     public ModelAndView approveOrder(@RequestParam("order-id") long orderId,
                                      @RequestParam("worker-id") long workerId,
                                      ModelAndView modelAndView) {
-        orderService.approveOrder(orderId, workerId);
+        User executor = userService.getUserById(workerId);
+        orderService.approveOrder(orderId, executor);
         modelAndView.setViewName("redirect:/customer/get-all-created-orders");
         return modelAndView;
     }
