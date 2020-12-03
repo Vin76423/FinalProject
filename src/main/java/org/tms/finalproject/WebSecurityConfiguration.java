@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
@@ -21,7 +22,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    @Qualifier(value = "customJpaUserDetailsService")
     private UserDetailsService customJpaUserDetailsService;
+
+    @Autowired
+    @Qualifier(value = "mockInMemoryUserDetailsService")
+    private UserDetailsService mockInMemoryUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -44,6 +50,19 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customJpaUserDetailsService);
+//        auth.userDetailsService(mockInMemoryUserDetailsService);
+
+        // Mock for Testing how Worker:
+        auth.inMemoryAuthentication()
+                .passwordEncoder(passwordEncoder())
+                .withUser("worker").password(passwordEncoder().encode("worker"))
+                .roles("WORKER");
+
+        // Mock for Testing how Customer:
+        auth.inMemoryAuthentication()
+                .passwordEncoder(passwordEncoder())
+                .withUser("customer").password(passwordEncoder().encode("customer"))
+                .roles("CUSTOMER");
     }
 
     @Bean

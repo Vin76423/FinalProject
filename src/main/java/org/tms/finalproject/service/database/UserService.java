@@ -5,6 +5,7 @@ import org.tms.finalproject.entity.order.Order;
 
 public interface UserService {
     void createUser(User user);
+    void deleteUserById(long id);
     User getUserById(long id);
     User getUserByLogin(String login);
 

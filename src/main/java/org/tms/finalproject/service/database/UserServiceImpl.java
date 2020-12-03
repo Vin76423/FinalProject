@@ -29,6 +29,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteUserById(long userId) {
+        if (userId < 1) {
+            throw new IllegalArgumentException("UserId is not correct!");
+        }
+        userRepository.deleteById(userId);
+    }
+
+    @Override
     public User getUserById(long userId) {
         if (userId < 1) {
             throw new IllegalArgumentException("UserId is not correct!");
