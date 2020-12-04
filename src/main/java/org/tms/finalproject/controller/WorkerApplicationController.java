@@ -5,9 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.tms.finalproject.dto.CommentDto;
+import org.tms.finalproject.dto.MassageDto;
 import org.tms.finalproject.dto.filter.FilterOrderDto;
+import org.tms.finalproject.entity.Dialog;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
+import org.tms.finalproject.service.database.DialogService;
 import org.tms.finalproject.service.database.OrderService;
 import org.tms.finalproject.service.database.UserService;
 import java.util.List;
@@ -18,11 +21,14 @@ public class WorkerApplicationController {
 
     private OrderService orderService;
     private UserService userService;
+    private DialogService dialogService;
 
     public WorkerApplicationController(OrderService orderService,
-                                       UserService userService) {
+                                       UserService userService,
+                                       DialogService dialogService) {
         this.orderService = orderService;
         this.userService = userService;
+        this.dialogService = dialogService;
     }
 
     @GetMapping(path = "/get-all-orders")
@@ -68,6 +74,11 @@ public class WorkerApplicationController {
         Order order = orderService.getOrderById(orderId);
         modelAndView.addObject("order", order);
         modelAndView.addObject("commentDto", new CommentDto());
+        modelAndView.addObject("massageDto", new MassageDto());
+        if (order.getStatus().equals("IN_WORK_STATUS") && dialogService.existByDialogMembers(order.getAuthor(), order.getExecutor())) {
+            Dialog dialog = dialogService.getDialogByDialogMembers(order.getAuthor(), order.getExecutor());
+            modelAndView.addObject("dialog", dialog);
+        }
         modelAndView.setViewName("worker/order");
         return modelAndView;
     }

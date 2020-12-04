@@ -6,11 +6,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.tms.finalproject.dto.CommentDto;
+import org.tms.finalproject.dto.MassageDto;
 import org.tms.finalproject.dto.order.OrderDto;
 import org.tms.finalproject.dto.order.PaidOrderDto;
 import org.tms.finalproject.dto.order.UnpaidOrderDto;
+import org.tms.finalproject.entity.Dialog;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
+import org.tms.finalproject.service.database.DialogService;
 import org.tms.finalproject.service.database.OrderService;
 import org.tms.finalproject.service.database.UserService;
 import org.tms.finalproject.service.mapper.OrderDtoDoMapperService;
@@ -23,13 +26,16 @@ public class CustomerApplicationController {
 
     private OrderService orderService;
     private UserService userService;
+    private DialogService dialogService;
     private OrderDtoDoMapperService orderDtoDoMapperService;
 
     public CustomerApplicationController(OrderService orderService,
                                          UserService userService,
+                                         DialogService dialogService,
                                          OrderDtoDoMapperService orderDtoDoMapperService) {
         this.orderService = orderService;
         this.userService = userService;
+        this.dialogService = dialogService;
         this.orderDtoDoMapperService = orderDtoDoMapperService;
     }
 
@@ -98,6 +104,11 @@ public class CustomerApplicationController {
         Order order = orderService.getOrderById(orderId);
         modelAndView.addObject("order", order);
         modelAndView.addObject("commentDto", new CommentDto());
+        modelAndView.addObject("massageDto", new MassageDto());
+        if (order.getStatus().equals("IN_WORK_STATUS") && dialogService.existByDialogMembers(order.getAuthor(), order.getExecutor())) {
+            Dialog dialog = dialogService.getDialogByDialogMembers(order.getAuthor(), order.getExecutor());
+            modelAndView.addObject("dialog", dialog);
+        }
         modelAndView.setViewName("customer/order");
         return modelAndView;
     }

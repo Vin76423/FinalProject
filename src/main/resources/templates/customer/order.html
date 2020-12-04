@@ -72,6 +72,43 @@
                         </div>
                     </div>
 
+                    <div class="col-sm-6 my-sm-4" th:if="${order.status.equals('IN_WORK_STATUS')}">
+                        <form th:action="@{/massages-chat/create-massage}" method="post" th:object="${massageDto}">
+
+                            <input type="hidden" name="orderAuthorId" th:value="${order.author.id}">
+                            <input type="hidden" name="orderExecutorId" th:value="${order.executor.id}">
+                            <input type="hidden" name="massageAuthorId" th:value="${order.author.id}">
+
+                            <input type="hidden" name="page-link" th:value="${#request.getServletPath()}">
+                            <input type="hidden" name="order-id" th:value="${order.id}">
+
+                            <div class="form-group">
+                                <textarea rows="6" class="form-control m-sm-2" aria-describedby="massagesHelp" disabled >
+                                    <div th:if="${dialog != null}">
+                                        <div th:each="massage : ${dialog.massages}" class="col-sm-9">
+                                            <div th:if="${massage.author.id == order.author.id}" class="float-left">
+                                                <div th:text="${massage.text}" class="form-text"></div>
+                                                <div th:text="${massage.author.userName}" class="form-text"></div>
+                                            </div>
+                                            <div th:if="${massage.author.id == order.executor.id}" class="float-right">
+                                                <div th:text="${massage.text}" class="form-text"></div>
+                                                <div th:text="${massage.author.userName}" class="form-text"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </textarea>
+                                <small id="massagesHelp" class="form-text text-muted mb-sm-4">
+                                    here you can look dialog...</small>
+
+                                <input type="text" th:field="*{text}" class="form-control" aria-describedby="textHelp">
+                                <small id="textHelp" class="form-text text-muted mb-sm-4">
+                                    here you can write your message ...</small>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Send</button>
+                        </form>
+                    </div>
+
                     <div class="col-sm-12 my-sm-4" th:if="${order.status.equals('IN_WORK_STATUS')}">
                         <div class="float-left">
                             <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#modal">Create Comment</a>
