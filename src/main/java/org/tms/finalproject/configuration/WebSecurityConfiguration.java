@@ -1,4 +1,4 @@
-package org.tms.finalproject;
+package org.tms.finalproject.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -44,6 +44,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .permitAll()
                 .and()
                     .logout()
+                    .logoutSuccessUrl("/home")
                     .permitAll();
     }
 
@@ -52,17 +53,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(customJpaUserDetailsService);
 //        auth.userDetailsService(mockInMemoryUserDetailsService);
 
-        // Mock for Testing how Worker:
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("worker").password(passwordEncoder().encode("worker"))
-                .roles("WORKER");
-
-        // Mock for Testing how Customer:
-        auth.inMemoryAuthentication()
-                .passwordEncoder(passwordEncoder())
-                .withUser("customer").password(passwordEncoder().encode("customer"))
-                .roles("CUSTOMER");
+//        // Mock for Testing how Worker:
+//        auth.inMemoryAuthentication()
+//                .passwordEncoder(passwordEncoder())
+//                .withUser("worker").password(passwordEncoder().encode("worker"))
+//                .roles("WORKER");
+//
+//        // Mock for Testing how Customer:
+//        auth.inMemoryAuthentication()
+//                .passwordEncoder(passwordEncoder())
+//                .withUser("customer").password(passwordEncoder().encode("customer"))
+//                .roles("CUSTOMER");
     }
 
     @Bean

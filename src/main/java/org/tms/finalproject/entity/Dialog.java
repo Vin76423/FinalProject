@@ -17,4 +17,11 @@ public class Dialog {
     private DialogId id;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "dialog")
     private List<Massage> massages;
+
+    @Override
+    public String toString() {
+        return massages.stream()
+                .map(massage -> String.format("%s\n@%s", massage.getText(), massage.getAuthor().getUserName()))
+                .reduce((a, b) -> String.format("%s\n\n%s", a, b)).orElseThrow(RuntimeException::new);
+    }
 }

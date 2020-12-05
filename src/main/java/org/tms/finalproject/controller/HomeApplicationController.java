@@ -16,14 +16,10 @@ import org.tms.finalproject.service.database.UserService;
 @RequestMapping(path = "/home")
 public class HomeApplicationController {
     private static String role;
-
     private UserService userService;
-    private PasswordEncoder passwordEncoder;
 
-    public HomeApplicationController(UserService userService,
-                                     PasswordEncoder passwordEncoder) {
+    public HomeApplicationController(UserService userService) {
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -46,8 +42,6 @@ public class HomeApplicationController {
     @PostMapping(path = "reg")
     public ModelAndView completeRegistration(ModelAndView modelAndView,
                                              User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
         userService.createUser(user);
         modelAndView.setViewName("redirect:/home");
         return modelAndView;

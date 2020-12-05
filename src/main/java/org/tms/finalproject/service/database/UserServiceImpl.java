@@ -2,12 +2,16 @@ package org.tms.finalproject.service.database;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ReflectionUtils;
 import org.tms.finalproject.entity.Comment;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
 import org.tms.finalproject.repository.UserRepository;
+
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 @Service
@@ -15,9 +19,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -25,7 +32,32 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new IllegalArgumentException("User is null!");
         }
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateByFieldNameAndValue(String name, String value) {
+        User actualUser = getActualUser();
+        Field[] fields = User.class.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equals(name)) {
+                field.setAccessible(true);
+                ReflectionUtils.setField(field, actualUser, value);
+                field.setAccessible(false);
+            }
+        }
+        userRepository.save(actualUser);
+
+//        try {
+//            Field currentField = User.class.getDeclaredField(name);
+//            currentField.setAccessible(true);
+//            currentField.set(actualUser, value);
+//            currentField.setAccessible(false);
+//        } catch (NoSuchFieldException | IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

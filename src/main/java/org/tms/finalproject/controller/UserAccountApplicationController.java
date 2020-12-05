@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.service.database.UserService;
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Field;
 
 @Controller
 @RequestMapping(path = "/account")
@@ -34,16 +33,7 @@ public class UserAccountApplicationController {
                                            @RequestParam("field") String field,
                                            HttpSession session,
                                            ModelAndView modelAndView) {
-        User actualUser = userService.getActualUser();
-        try {
-            Field currentField = User.class.getDeclaredField(field);
-            currentField.setAccessible(true);
-            currentField.set(actualUser, value);
-            currentField.setAccessible(false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        userService.createUser(actualUser);
+        userService.updateByFieldNameAndValue(field, value);
         session.invalidate();
         modelAndView.setViewName("redirect:/account/get-profile");
         return modelAndView;

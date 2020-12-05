@@ -67,22 +67,11 @@
                             <input type="hidden" name="order-id" th:value="${order.id}">
 
                             <div class="form-group">
-                                <textarea rows="6" class="form-control m-sm-2" aria-describedby="massagesHelp" disabled >
-                                    <div th:if="${dialog != null}">
-                                        <div th:each="massage : ${dialog.massages}" class="col-sm-9">
-                                            <div th:if="${massage.author.id == order.executor.id}" class="float-left">
-                                                <div th:text="${massage.text}" class="form-text"></div>
-                                                <div th:text="${massage.author.userName}" class="form-text"></div>
-                                            </div>
-                                            <div th:if="${massage.author.id == order.author.id}" class="float-right">
-                                                <div th:text="${massage.text}" class="form-text"></div>
-                                                <div th:text="${massage.author.userName}" class="form-text"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </textarea>
-                                <small id="massagesHelp" class="form-text text-muted mb-sm-4">
-                                    here you can look dialog...</small>
+                                <div th:if="${dialog != null}">
+                                    <textarea rows="6" class="form-control m-sm-2" aria-describedby="massagesHelp" disabled th:text="${dialog.toString()}"></textarea>
+                                    <small id="massagesHelp" class="form-text text-muted mb-sm-4">
+                                        here you can look dialog...</small>
+                                </div>
 
                                 <input type="text" th:field="*{text}" class="form-control" aria-describedby="textHelp">
                                 <small id="textHelp" class="form-text text-muted mb-sm-4">
