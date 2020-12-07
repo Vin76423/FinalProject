@@ -1,10 +1,15 @@
 package org.tms.finalproject.entity.order;
 
 import lombok.*;
+import org.thymeleaf.expression.Dates;
 import org.tms.finalproject.entity.Location;
 import org.tms.finalproject.entity.User;
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,6 +22,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class Order {
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd  HH:mm:ss");
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -41,11 +48,25 @@ public abstract class Order {
     private Location location;
 
     private String status = "ACTIVE_STATUS";
-//    ACTIVE_STATUS
-//    AWAITING_APPROVAL_STATUS
-//    IN_WORK_STATUS
-//    CLOSED_STATUS
+    private LocalDateTime orderCreatedDateTime = LocalDateTime.now();
 
-//    private LocalDateTime orderCreatedDateTime = LocalDateTime.now();
 
+
+    public Order(long id,
+                 String title,
+                 String description,
+                 User author,
+                 User executor,
+                 List<User> applicantsToOrder,
+                 Location location,
+                 String status) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.author = author;
+        this.executor = executor;
+        this.applicantsToOrder = applicantsToOrder;
+        this.location = location;
+        this.status = status;
+    }
 }

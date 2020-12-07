@@ -18,7 +18,6 @@
                 <div class="card-deck">
                     <div th:each="order : ${orders}" class="col-sm-12">
                         <div class="card my-2">
-                            <img th:src="@{img/help.jpg}" alt="order-type-logo" class="card-img-top">
                             <div class="card-body">
                                 <h4 th:text="${order.title}" class="card-title text-center"></h4>
                                 <div th:if="${order.status.equals('AWAITING_APPROVAL_STATUS')}" class="my-sm-4">

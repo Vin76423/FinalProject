@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.tms.finalproject.entity.embeddable.DialogId;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity

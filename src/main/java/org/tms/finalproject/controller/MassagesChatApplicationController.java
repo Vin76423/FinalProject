@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.tms.finalproject.dto.MassageDto;
+import org.tms.finalproject.entity.Dialog;
 import org.tms.finalproject.entity.Massage;
+import org.tms.finalproject.entity.embeddable.DialogId;
 import org.tms.finalproject.service.database.DialogService;
 import org.tms.finalproject.service.database.MassageService;
 import org.tms.finalproject.service.mapper.MassageDtoDoMapperService;
+
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping(path = "/massages-chat")

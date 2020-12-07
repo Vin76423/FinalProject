@@ -30,4 +30,11 @@ public class UnpaidOrder extends Order {
         super(id, title, description, author, executor, applicantsToOrder, location, status);
         this.priority = priority;
     }
+
+
+
+    @Override
+    public String toString() {
+        return "Priority: " + priority;
+    }
 }

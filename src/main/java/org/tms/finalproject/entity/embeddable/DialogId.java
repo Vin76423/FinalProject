@@ -14,22 +14,23 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DialogId implements Serializable {
+
     @OneToOne
-    private User firstMember;
+    private User authorOrder;
     @OneToOne
-    private User secondMember;
+    private User executorOrder;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DialogId dialogId = (DialogId) o;
-        return Objects.equals(firstMember, dialogId.firstMember) &&
-                Objects.equals(secondMember, dialogId.secondMember);
+        return Objects.equals(authorOrder, dialogId.authorOrder) &&
+                Objects.equals(executorOrder, dialogId.executorOrder);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstMember, secondMember);
+        return Objects.hash(authorOrder, executorOrder);
     }
 }

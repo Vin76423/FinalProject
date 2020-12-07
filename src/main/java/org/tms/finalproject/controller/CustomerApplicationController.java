@@ -13,6 +13,7 @@ import org.tms.finalproject.dto.order.UnpaidOrderDto;
 import org.tms.finalproject.entity.Dialog;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
+import org.tms.finalproject.entity.order.PaidOrder;
 import org.tms.finalproject.service.database.DialogService;
 import org.tms.finalproject.service.database.OrderService;
 import org.tms.finalproject.service.database.UserService;

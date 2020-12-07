@@ -65,10 +65,9 @@
 <!--        Grid of orders:-->
             <div class="container float-sm-right w-75">
 
-                <div class="card-deck">
-                    <div th:each="item : ${orders}">
-                        <div class="card my-2">
-                            <img th:src="@{img/help.jpg}" alt="order-type-logo" class="card-img-top">
+                <div class="row">
+                    <div th:each="item : ${orders}" class="col-sm-6">
+                        <div class="card my-2 col-sm-12">
                             <div class="card-body">
                                 <h4 th:text="${item.title}" class="card-title text-center"></h4>
                                 <div class="my-sm-2">

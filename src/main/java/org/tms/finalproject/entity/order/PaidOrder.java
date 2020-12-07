@@ -14,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PaidOrder extends Order {
     private double price;
-//    private LocalDateTime orderDeadlineDateTime;
 
     public PaidOrder(long id,
                      String title,
@@ -27,5 +26,12 @@ public class PaidOrder extends Order {
                      double price) {
         super(id, title, description, author, executor, applicantsToOrder, location, status);
         this.price = price;
+    }
+
+
+
+    @Override
+    public String toString() {
+        return "Price: " + price;
     }
 }

@@ -20,13 +20,19 @@
                     <div class="col-sm-12">
                         <h4 th:text="${order.title}" class="text-center"></h4>
                         <p th:text="${order.description}" class="mb-sm-4"></p>
-                        <div class="mb-sm-4">
-                            <h6 class="float-left mr-sm-2">Status of order: </h6>
-                            <div th:text="${order.status}" class="d-inline"></div>
+                        <div class="mb-sm-4 col-sm-12 px-sm-0">
+                            <div class="col-sm-12 px-sm-0">
+                                <b class="float-left mr-sm-2">Date of registration: </b>
+                                <div th:text="${order.orderCreatedDateTime.format(order.formatter)}"></div>
+                            </div>
+                            <div class="col-sm-12 px-sm-0">
+                                <b class="float-left mr-sm-2">Status of order: </b>
+                                <div th:text="${order.status}"></div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-sm-12">
+                    <div class="col-sm-6 mb-sm-4">
                         <h6>Location: </h6>
                         <ul>
                             <li th:text="'City - ' + ${order.location.city}"></li>
@@ -36,18 +42,29 @@
                         </ul>
                     </div>
 
+                    <div class="col-sm-6">
+                        <div th:with="list = ${#strings.listSplit(order.toString(), ' ')}">
+                            <h6 th:text="${list.get(0)}" class="float-left mr-sm-2"></h6>
+                            <div th:text="${list.get(1)}" class="d-inline"></div>
+                        </div>
+                    </div>
+
                     <div class="col-sm-12">
                         <h6>Client: </h6>
                         <div>
                             <div th:text="${order.author.userName}" class="float-left mr-sm-2"></div>
                             <div th:text="${order.author.rating}"></div>
                         </div>
-                        <div th:if="${order.author.comments != null}" class="col-sm-9">
-                            <div th:text="${'Clients comments...'}" class="text-muted mt-sm-2"></div>
-                            <div th:each="comment : ${order.author.comments}" class="my-sm-4">
-                                <div th:text="${comment.title}" class="float-left mr-sm-2"></div>
-                                <div th:text="${comment.rating}"></div>
-                                <p th:text="${comment.description}"></p>
+                        <div th:if="${order.author.comments != null}" class="text-left">
+                            <div th:text="${'Comments aboute current Client...'}" class="text-muted mt-sm-2"></div>
+                            <div th:each="comment : ${order.author.comments}" class="my-sm-2">
+                                <div>
+                                    <div th:text="${comment.title}" class="float-left mr-sm-2"></div>
+                                    <div th:text="${comment.rating}"></div>
+                                </div>
+                                <div>
+                                    <p th:text="${comment.description}"></p>
+                                </div>
                             </div>
                         </div>
                     </div>

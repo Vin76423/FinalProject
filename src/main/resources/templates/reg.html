@@ -14,23 +14,40 @@
 
         <nav th:insert="~{log-out-nav-template :: nav-bar}" class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top"></nav>
 
-        <form th:action="@{/home/reg}" method="post" th:object="${user}">
-            <label th:for="${#ids.next('userName')}">Login: </label>
-            <input type="text" th:field="*{userName}">
+        <div class="container-fluid">
+            <div class="container d-flex justify-content-center align-items-center" style="height: 750px">
+                <div class="w-50 ">
+                    <form th:action="@{/home/reg}" method="post" th:object="${user}" class="col-sm-12">
+                        <div class="text-center align-middle">
+                            <h4 class="my-sm-4">Create your profile...</h4>
 
-            <label th:for="${#ids.next('password')}">Login: </label>
-            <input type="password" th:field="*{password}">
+                            <div class="col-sm-12 my-sm-4 ">
+                                <label th:for="${#ids.next('userName')}" class="col-sm-4 form-text float-left">Login: </label>
+                                <input type="text" th:field="*{userName}" class="w-50 form-control">
+                            </div>
 
-            <label th:for="${#ids.next('role')}">Role: </label>
-            <select typeof="text" th:field="*{role}">
-                <option value="WORKER">Worker</option>
-                <option value="CUSTOMER">Customer</option>
-            </select>
+                            <div class="col-sm-12 my-sm-4">
+                                <label th:for="${#ids.next('password')}" class="col-sm-4 form-text float-left">Password: </label>
+                                <input type="password" th:field="*{password}" class="w-50 form-control">
+                            </div>
 
-            <br>
-            <br>
-            <button>Create Account</button>
-        </form>
+                            <div class="col-sm-12 my-sm-4">
+                                <label th:for="${#ids.next('role')}" class="col-sm-4 form-text float-left">Role: </label>
+                                <select typeof="text" th:field="*{role}" class="w-50 form-control">
+                                    <option value="WORKER" class="form-text">Worker</option>
+                                    <option value="CUSTOMER" class="form-text">Customer</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="ml-sm-4 my-sm-4 text-right">
+                            <button type="submit" class="btn btn-outline-success">Create Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

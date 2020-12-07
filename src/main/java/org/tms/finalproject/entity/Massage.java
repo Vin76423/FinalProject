@@ -18,8 +18,8 @@ public class Massage {
 
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumns({@JoinColumn(name = "dialog_id_first_member"),
-                    @JoinColumn(name = "dialog_id_second_member")})
+    @JoinColumns({@JoinColumn(name = "dialog_id_author_of_order"),
+                    @JoinColumn(name = "dialog_id_executor_of_order")})
     private Dialog dialog;
 
     @OneToOne

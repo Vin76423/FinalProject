@@ -7,11 +7,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.tms.finalproject.entity.Comment;
 import org.tms.finalproject.entity.Location;
 import org.tms.finalproject.entity.User;
 import org.tms.finalproject.entity.order.Order;
 import org.tms.finalproject.entity.order.PaidOrder;
 import org.tms.finalproject.entity.order.UnpaidOrder;
+import org.tms.finalproject.service.database.CommentService;
 import org.tms.finalproject.service.database.OrderService;
 import org.tms.finalproject.service.database.OrderServiceImpl;
 import org.tms.finalproject.service.database.UserService;
@@ -25,6 +27,8 @@ public class WebConfiguration {
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private CommentService commentService;
 
     @EventListener(classes = ContextRefreshedEvent.class)
     public void contextOnStartUp() {
@@ -54,5 +58,26 @@ public class WebConfiguration {
         orderService.createOrder(order1);
         orderService.createOrder(order2);
         orderService.createOrder(order3);
+
+
+
+
+        String comTitle1 = "Grate gay...";
+        String comDescription1 = "Nice to work. Timely payment.";
+        Comment commentForCustomer = new Comment(0, customer, 5.3, comTitle1, comDescription1, worker.getUserName());
+
+        String comTitle2 = "Nice executor!";
+        String comDescription2 = "The work was done efficiently and on time.";
+        Comment commentForWorker = new Comment(0, worker, 6.5, comTitle2, comDescription2, customer.getUserName());
+
+        String comTitle3 = "Nice !!!";
+        String comDescription3 = "The work was done VERY efficiently.";
+        Comment commentForWorker2 = new Comment(0, worker, 7.2, comTitle3, comDescription3, customer.getUserName());
+
+        commentService.createComment(commentForCustomer);
+        userService.recalculateAverageRatingForUserById(customer.getId());
+        commentService.createComment(commentForWorker);
+        commentService.createComment(commentForWorker2);
+        userService.recalculateAverageRatingForUserById(worker.getId());
     }
 }

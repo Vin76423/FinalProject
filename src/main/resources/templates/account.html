@@ -80,7 +80,7 @@
                     <div class="col-sm-12">
                         <h3>Comments:</h3>
                         <div th:if="${profile.comments.size() != 0}">
-                            <ul th:each="comment : ${profile.comments}">
+                            <ul th:each="comment : ${profile.comments}" class="mb-sm-2">
                                 <div th:text="${comment.title}" class="float-left mr-sm-2"></div>
                                 <div th:text="${comment.rating}"></div>
                                 <p th:text="${comment.description}"></p>
