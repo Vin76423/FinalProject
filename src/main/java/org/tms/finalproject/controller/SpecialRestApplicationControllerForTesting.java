@@ -23,7 +23,7 @@ public class SpecialRestApplicationControllerForTesting {
     @PostMapping(path = "/create-paid-order")
     public void createPaidOrder(@RequestBody PaidOrderDto orderDto) {
 
-        Order order = orderDtoDoMapperService.buildDo(orderDto);
-        orderService.createOrder(order);
+//        Order order = orderDtoDoMapperService.buildDo(orderDto);
+//        orderService.createOrder(order);
     }
 }

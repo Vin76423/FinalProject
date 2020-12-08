@@ -25,6 +25,7 @@
                         <div class="col-sm-12">
                             <label th:for="${#ids.next('price')}" class="m-sm-2 align-self-center">Price: </label>
                             <input type="text" th:field="*{price}" class="w-50 d-inline form-control m-sm-2">
+                            <a th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red"></a>
                         </div>
 
                         <button type="submit" class="btn btn-outline-primary m-sm-2 my-sm-4 mb-sm-6">Create order</button>

@@ -18,6 +18,8 @@ import org.tms.finalproject.service.database.DialogService;
 import org.tms.finalproject.service.database.OrderService;
 import org.tms.finalproject.service.database.UserService;
 import org.tms.finalproject.service.mapper.OrderDtoDoMapperService;
+
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -62,7 +64,7 @@ public class CustomerApplicationController {
     }
 
     @PostMapping(path = "/create-paid-order")
-    public ModelAndView createPaidOrder(@ModelAttribute("orderDto") PaidOrderDto orderDto,
+    public ModelAndView createPaidOrder(@Valid @ModelAttribute("orderDto") PaidOrderDto orderDto,
                                     BindingResult bindingResult,
                                     ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {
@@ -76,7 +78,7 @@ public class CustomerApplicationController {
     }
 
     @PostMapping(path = "/create-unpaid-order")
-    public ModelAndView createUnpaidOrder(@ModelAttribute("orderDto") UnpaidOrderDto orderDto,
+    public ModelAndView createUnpaidOrder(@Valid @ModelAttribute("orderDto") UnpaidOrderDto orderDto,
                                     BindingResult bindingResult,
                                     ModelAndView modelAndView) {
         if (bindingResult.hasErrors()) {

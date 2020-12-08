@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
@@ -21,8 +22,7 @@ public abstract class OrderDto {
     @NotEmpty(message = "It's required field!")
     @NotBlank(message = "It's required field!")
     private String locationStreet;
-    @NotEmpty(message = "It's required field!")
-    @NotBlank(message = "It's required field!")
+    @Positive(message = "It's required field!")
     private int locationHome;
     private int locationFlat;
 }

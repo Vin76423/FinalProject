@@ -12,6 +12,7 @@
             <div class="col-sm-12">
                 <label th:for="${#ids.next('title')}" class="m-sm-2 align-self-center">Title: </label>
                 <input type="text" th:field="*{title}" class="w-50 d-inline form-control m-sm-2">
+                <a th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color: red"></a>
             </div>
 
             <div class="col-sm-9">
@@ -25,16 +26,19 @@
                 <div class="w-100">
                     <label th:for="${#ids.next('locationCity')}" class="m-sm-2 align-self-center">City: </label>
                     <input type="text" th:field="*{locationCity}" class="col-sm-6 d-inline-block form-control m-sm-2 ">
+                    <a th:if="${#fields.hasErrors('locationCity')}" th:errors="*{locationCity}" style="color: red"></a>
                 </div>
 
                 <div class="w-100">
                     <label th:for="${#ids.next('locationStreet')}" class="m-sm-2 align-self-center">Street: </label>
                     <input type="text" th:field="*{locationStreet}" class="w-50 d-inline-block form-control m-sm-2">
+                    <a th:if="${#fields.hasErrors('locationStreet')}" th:errors="*{locationStreet}" style="color: red"></a>
                 </div>
 
                 <div class="w-100">
                     <label th:for="${#ids.next('locationHome')}" class="m-sm-2 align-self-center">Home: </label>
                     <input type="text" th:field="*{locationHome}" class="col-sm-6 d-inline-block form-control m-sm-2">
+                    <a th:if="${#fields.hasErrors('locationHome')}" th:errors="*{locationHome}" style="color: red"></a>
                 </div>
 
                 <div class="w-100">

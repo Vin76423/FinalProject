@@ -1,16 +1,20 @@
 package org.tms.finalproject.dto.order;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NegativeOrZero;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class PaidOrderDto extends OrderDto {
-    @NotEmpty(message = "It's required field!")
-    @NotBlank(message = "It's required field!")
-    // Create a constraint "Not negative" :
+
+    @Positive(message = "It's required field!")
     private double price;
 //    private LocalDateTime orderDeadlineDateTime;
 
